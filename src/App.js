@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Components/Login";
 import Cadastro from "./Components/Cadastro";
+import Today from "./Components/Today";
 import Habits from "./Components/Habits";
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
     <Routes>
       <Route exact path={`/`} element={<Login/>}/>
       <Route path={`/cadastro`} element={<Cadastro/>}/>
-      <Route exact path={`/hoje`} element={<Habits/>}/>
+      <Route path={`/hoje`} element={<Today/>}/>
+      <Route exact path={`/habitos`} element={<Habits/>}/>
     </Routes>
     
     </BrowserRouter>

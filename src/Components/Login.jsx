@@ -3,6 +3,7 @@ import axios from "axios";
 import Logo from "./../Assets/Images/Logo.png";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 
 
 
@@ -11,6 +12,8 @@ export default function Login(){
     const Navigator = useNavigate();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    // const [use, setUser] = useState();
+    let teste = undefined;
 
     function goToCadastro(){
         Navigator("/cadastro");
@@ -18,6 +21,7 @@ export default function Login(){
 
     function LogIn(e){
         e.preventDefault();
+        teste = "loading";
         
         const Base_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
         const body ={email, password};
@@ -25,7 +29,7 @@ export default function Login(){
 
         const promisse = axios.post(Base_URL, body);
         promisse.then(response => {console.log(response.data); Navigator("/hoje");});
-        promisse.catch(error => alert(error.response.data.message));
+        promisse.catch(error => {alert(error.response.data.message); teste = undefined});
     }
 
     return(
@@ -38,6 +42,7 @@ export default function Login(){
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
+                    disabled={(teste === "loading") ? true : false}
                 />
                 <Input 
                     placeholder="senha" 
@@ -45,8 +50,24 @@ export default function Login(){
                     required
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    disabled={(teste === "loading") ? true : false}
                 />
-                <Button type="submit" >Entrar</Button>
+                {(teste === "loading") ? (
+                        <Button disabled="true" type="button">
+                            <ThreeDots disabled="true"
+                                height="80" 
+                                width="80" 
+                                radius="9"
+                                color="#FFFFFF" 
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            />
+                        </Button>
+                    ) : (
+                        <Button type="submit" >Entrar</Button>
+                )}
             </Form>
             <CadastroLink onClick={(e) => {e.preventDefault(); goToCadastro();}} type="button">Não tem uma conta? Cadastre-se!</CadastroLink>
         </MainContainer>
@@ -90,10 +111,13 @@ const Input = styled.input`
 `
 
 const Button = styled.button`
+    display: flex;
     width: 305px;
     height: 45px;
     margin: 5px auto;
     background: #52B6FF;
+    justify-content: center;
+    align-items: center;
     
     border: none;
     border-radius: 4.63636px;
