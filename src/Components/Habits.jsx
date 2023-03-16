@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 
-export default function Habits(){
+export default function Habits(props){
+
+    
+    const {  user, habits } = props;
 
     function AddHabit(){
         console.log("New Habit")
@@ -11,12 +14,20 @@ export default function Habits(){
         <Container>
             <NavBar>
                 <NavTitle>TrackIt</NavTitle>
-                <Profile src="https://i.pinimg.com/originals/8c/16/cb/8c16cb9da19085e9ff307c5934ead19d.jpg" />
+                <Profile src={user.image} />
             </NavBar>
             <CreateHabit>
                 <Title>Meus hábitos</Title>
                 <Button onClick={() => AddHabit()} >+</Button>
             </CreateHabit>
+            <List>
+                {((habits === undefined) || (habits.length === 0)) ? (
+                    <NoHabits>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabits>
+                ) : (
+                    null
+                )}
+
+            </List>
         </Container>
     )
 }
@@ -54,6 +65,7 @@ const Container = styled.section`
     flex-direction: column;
     padding: 0 20px;
     box-sizing: border-box;
+    width: 100vw;
 `
 
 const CreateHabit = styled.div`
@@ -61,6 +73,19 @@ const CreateHabit = styled.div`
     margin-top: 98px;
     align-items: center;
     justify-content: space-between;
+    width: 100vw;
+`
+
+const List = styled.div`
+    width: 100vw;
+    height:auto;
+`
+
+const NoHabits = styled.h2`
+    font-family: 'Lexend Deca';
+    font-weight: 400;
+    font-size: 18px;
+    color: #666666;
 `
 
 const Title = styled.h1`
@@ -78,6 +103,8 @@ const Button = styled.button`
     align-items: center;
     justify-content: center;
     padding-bottom: 7px;
+    
+    margin: 0 20px;
     box-sizing: border-box;
 
     background: #52B6FF;

@@ -1,18 +1,26 @@
+import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Logo from "./../Assets/Images/Logo.png";
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { useState, createContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import { TokenContext } from "../Providers/Token";
+import { ProfileContext } from './../Providers/Profile';
+
+const Token = createContext();
+const ImgProfile = createContext();
 
 
-
-export default function Login(){
+function Login(props){
 
     const Navigator = useNavigate();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    // const [use, setUser] = useState();
+
+    const {setToken} = React.useContext(TokenContext);
+    const {setProfile} = React.useContext(ProfileContext);
+    
     let teste = undefined;
 
     function goToCadastro(){
@@ -28,7 +36,14 @@ export default function Login(){
         // console.log(body);
 
         const promisse = axios.post(Base_URL, body);
-        promisse.then(response => {console.log(response.data); Navigator("/hoje");});
+        promisse.then(response => {
+            console.log(response.data); 
+            setToken(response.data.token); 
+            setProfile(response.data.image);
+            
+            Navigator("/hoje");
+        });
+
         promisse.catch(error => {alert(error.response.data.message); teste = undefined});
     }
 
@@ -73,6 +88,8 @@ export default function Login(){
         </MainContainer>
     )
 }
+
+export {Login, Token, ImgProfile};
 
 const MainContainer = styled.section`
     display: flex;
