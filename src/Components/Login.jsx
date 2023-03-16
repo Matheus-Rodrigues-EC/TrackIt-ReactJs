@@ -5,11 +5,9 @@ import Logo from "./../Assets/Images/Logo.png";
 import { useNavigate } from 'react-router-dom';
 import { useState, createContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
-import { TokenContext } from "../Providers/Token";
-import { ProfileContext } from './../Providers/Profile';
+import { UserDataContext } from "../Providers/UserData";
 
 const Token = createContext();
-const ImgProfile = createContext();
 
 
 function Login(props){
@@ -17,11 +15,8 @@ function Login(props){
     const Navigator = useNavigate();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-
-    const {setToken} = React.useContext(TokenContext);
-    const {setProfile} = React.useContext(ProfileContext);
-    
     let teste = undefined;
+    const {setUserData} = React.useContext(UserDataContext);
 
     function goToCadastro(){
         Navigator("/cadastro");
@@ -29,17 +24,17 @@ function Login(props){
 
     function LogIn(e){
         e.preventDefault();
-        teste = "loading";
+        teste = "undefined";
         
         const Base_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
         const body ={email, password};
-        // console.log(body);
 
         const promisse = axios.post(Base_URL, body);
         promisse.then(response => {
-            console.log(response.data); 
-            setToken(response.data.token); 
-            setProfile(response.data.image);
+            // console.log(response.data);
+            const user = {name: response.data.name, image: response.data.image, token: response.data.token}
+
+            setUserData (user);
             
             Navigator("/hoje");
         });
@@ -57,7 +52,8 @@ function Login(props){
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    disabled={(teste === "loading") ? true : false}
+                    disabled={(teste !== undefined) ? true : false}
+                    data-test="email-input"
                 />
                 <Input 
                     placeholder="senha" 
@@ -65,10 +61,11 @@ function Login(props){
                     required
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    disabled={(teste === "loading") ? true : false}
+                    disabled={(teste !== undefined) ? true : false}
+                    data-test="password-input"
                 />
-                {(teste === "loading") ? (
-                        <Button disabled="true" type="button">
+                {(teste !== undefined) ? (
+                        <Button disabled="true" type="button" data-test="login-btn" >
                             <ThreeDots disabled="true"
                                 height="80" 
                                 width="80" 
@@ -78,18 +75,29 @@ function Login(props){
                                 wrapperStyle={{}}
                                 wrapperClassName=""
                                 visible={true}
+                                
                             />
                         </Button>
                     ) : (
-                        <Button type="submit" >Entrar</Button>
+                        <Button type="submit" data-test="login-btn" >Entrar</Button>
                 )}
             </Form>
-            <CadastroLink onClick={(e) => {e.preventDefault(); goToCadastro();}} type="button">Não tem uma conta? Cadastre-se!</CadastroLink>
+            <CadastroLink 
+                onClick={(e) => {
+                    e.preventDefault(); 
+                    goToCadastro();
+                    }
+                } 
+                type="button"
+                data-test="signup-link"
+            >
+                Não tem uma conta? Cadastre-se!
+            </CadastroLink>
         </MainContainer>
     )
 }
 
-export {Login, Token, ImgProfile};
+export {Login, Token};
 
 const MainContainer = styled.section`
     display: flex;

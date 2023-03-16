@@ -43,6 +43,7 @@ export default function Cadastro(){
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     disabled={(teste === "loading") ? true : false}
+                    data-test="email-input"
                 />
                 <Input 
                     placeholder="senha"
@@ -51,6 +52,7 @@ export default function Cadastro(){
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     disabled={(teste === "loading") ? true : false}
+                    data-test="password-input"
                 />
                 <Input 
                     placeholder="nome" 
@@ -59,6 +61,7 @@ export default function Cadastro(){
                     value={name}
                     onChange={e => setName(e.target.value)}
                     disabled={(teste === "loading") ? true : false}
+                    data-test="user-name-input"
                 />
                 <Input 
                     placeholder="foto" 
@@ -67,9 +70,10 @@ export default function Cadastro(){
                     value={image}
                     onChange={e => setImage(e.target.value)}
                     disabled={(teste === "loading") ? true : false}
+                    data-test="user-image-input"
                 />
                 {(teste === "loading") ? (
-                        <Button disabled="true" type="button">
+                        <Button disabled="true" type="button" data-test="signup-btn">
                             <ThreeDots disabled="true"
                                 height="80" 
                                 width="80" 
@@ -82,10 +86,16 @@ export default function Cadastro(){
                             />
                         </Button>
                     ) : (
-                        <Button type="submit" >Entrar</Button>
+                        <Button type="submit" data-test="signup-btn" >Entrar</Button>
                 )}
             </Form>
-            <CadastroLink onClick={() => {goToLogin()}} type="button" >Já tem uma conta? Faça login!</CadastroLink>
+            <CadastroLink 
+                onClick={() => {goToLogin()}} 
+                type="button" 
+                data-test="login-link"
+            >
+                Já tem uma conta? Faça login!
+            </CadastroLink>
         </MainContainer>
     )
 }
