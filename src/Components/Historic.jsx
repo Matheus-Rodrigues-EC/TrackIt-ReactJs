@@ -1,16 +1,30 @@
-// import React, { useEffect } from "react"
-// import styled from "styled-components"
+import React from "react"
+import styled from "styled-components"
 // import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 // import { UserDataContext } from "../Providers/UserData";
-// // import { CircularProgressbar } from "react-circular-progressbar";
-import dayjs from 'dayjs'
+import Header from "./Header";
+import Menu from "./Menu";
 
-export default function Teste(){
+export default function Historic(){
+
+    // const {UserData} = React.useContext(UserDataContext);
 
     return(
-        <>
-            <h1>{`${dayjs().get('date')} / ${dayjs().get('month') +1}`} </h1>
-        </>
+        <Container>
+            <Header data-test="header" />
+            
+            <Menu data-test="menu" />
+        </Container>
     )
 }
+
+
+const Container = styled.section`
+    display: flex;
+    background-color: #E7E7E7;
+    flex-direction: column;
+    padding: 70px 0 70px 0;
+    width: 100vw;
+    height: 100vh;
+    
+`

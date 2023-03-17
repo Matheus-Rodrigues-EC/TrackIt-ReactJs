@@ -169,6 +169,8 @@ const Button = styled.button`
 
 const LoginLink = styled.a`
     color: #52B6FF;
+    background-color: transparent;
+    border: none;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;

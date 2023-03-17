@@ -5,8 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../Providers/UserData";
 import { HabitsListContext } from "../Providers/HabitsList";
 import { ThreeDots } from "react-loader-spinner";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import Trash from "./../Assets/Images/Trash.png"
-// import { CircularProgressbar } from "react-circular-progressbar";
+import Header from "./Header";
+import Menu from "./Menu";
 
 export default function Habits(props){
 
@@ -75,33 +78,51 @@ export default function Habits(props){
         });
         promisse.catch(error => {
             alert(error.response.data.message);
-            Navigator('/');
         })
     }
 
+    function ActiveLoadCreateHabit(){
+        setLoadCreateHabit(1);
+    }
+
     function deleteHabit(id){
-        const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
 
-        const config = {
-            headers: {Authorization: `Bearer ${UserData.token}`}
-        }
+        confirmAlert({
+            title: 'Confirmar exclusão',
+            message: 'Você deseja excluir esse hábito ?',
+            buttons: [
+                {
+                    label: 'Excluir',
+                    onClick: () => {
+                        const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
 
-        const promisse = axios.delete(url, config);
-        promisse.then(response => console.log(response.data));
-        promisse.catch(error => error.data.message);
+                        const config = {
+                            headers: {Authorization: `Bearer ${UserData.token}`}
+                        }
+
+                        const promisse = axios.delete(url, config);
+                        promisse.then(response => console.log(response.data));
+                        promisse.catch(error => error.data.message);
+                    }
+                },
+                {
+                    label: 'Cancelar',
+                    onClick: () => {}
+                }
+            ]
+            });
+
+        
     }
 
     return(
         <Container>
-            <NavBar data-test="header">
-                <NavTitle>TrackIt</NavTitle>
-                <Profile src={UserData.image} />
-            </NavBar>
+            <Header data-test="header" />
+
             <CreateHabit>
                 <Title>Meus hábitos</Title>
                 <Button onClick={() => {setVisible("flex")}} data-test="habit-create-btn" >+</Button>
             </CreateHabit>
-            <List>
                 <HabitContainer visible={visible} data-test="habit-create-container">
                     <Input 
                         placeholder="Nome do hábito" 
@@ -137,7 +158,7 @@ export default function Habits(props){
                     </ListWeekdays>
                     <ContainerButtons>
                         <Cancel 
-                            onClick={() => {setVisible("none"); setHabitName(""); setSelect([]);}} 
+                            onClick={() => {setVisible("none");}} 
                             data-test="habit-create-cancel-btn" 
                             disabled={(loadCreateHabit > 0) ? true : false}
                             >
@@ -145,27 +166,27 @@ export default function Habits(props){
                         </Cancel>
 
                         {(loadCreateHabit !== 0) ? (
-                        <SaveHabit disabled="true" type="button" data-test="habit-create-save-btn" >
-                            <ThreeDots disabled="true"
-                                height="80" 
-                                width="80" 
-                                radius="9"
-                                color="#FFFFFF" 
-                                ariaLabel="three-dots-loadSingUping"
-                                wrapperStyle={{}}
-                                wrapperClassName=""
-                                visible={true}
-                            />
-                        </SaveHabit>
-                    ) : (
-                        <SaveHabit 
-                            onClick={() => {AddHabit(); setLoadCreateHabit();}} 
-                            data-test="habit-create-save-btn" 
-                            disabled={(loadCreateHabit > 0) ? true : false}
-                            >
-                                Salvar
-                        </SaveHabit>
-                )}
+                            <Confirme disabled="true" type="button" data-test="habit-create-save-btn" >
+                                <ThreeDots
+                                    height="80" 
+                                    width="80" 
+                                    radius="9"
+                                    color="#FFFFFF" 
+                                    ariaLabel="three-dots-loadSingUping"
+                                    wrapperStyle={{}}
+                                    wrapperClassName=""
+                                    visible={true}
+                                />
+                            </Confirme>
+                            ) : (
+                            <Confirme 
+                                onClick={() => {AddHabit(); ActiveLoadCreateHabit();}} 
+                                data-test="habit-create-save-btn" 
+                                disabled={(loadCreateHabit > 0) ? true : false}
+                                >
+                                    Salvar
+                            </Confirme>
+                        )}
                     </ContainerButtons>
                 </HabitContainer>
                 {((habitsList.length !== 0)) ? (
@@ -173,7 +194,7 @@ export default function Habits(props){
                         <HabitContainerItem data-test="habit-container">
                             <TitleContainer>
                             <NameHabit data-test="habit-name" > {habit.name} </NameHabit>
-                                <Icon src={Trash} onClick={() => deleteHabit(habit.id)} data-test="habit-delete-btn" />
+                                <Icon src={Trash} onClick={() => {deleteHabit(habit.id); }} data-test="habit-delete-btn" />
                             </TitleContainer>
                             <ListWeekdays>
                             {weekdays.map((day, index) => (
@@ -190,50 +211,11 @@ export default function Habits(props){
                 ) : ( 
                     <NoHabits>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabits>
                 )}
-            </List>
-            <Footer data-test="menu">
-                <FButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
-                    Hábitos
-                </FButton>
-                <TButton onClick={() => Navigator("/hoje")} data-test="today-link" >
-                    {/* <CircularProgressbar value={50} text={`Hoje`} />; */}
-                    Hoje
-                </TButton>
-                <FButton onClick={() => Navigator("historico")} data-test="history-link" >
-                    Histórico
-                </FButton>
-            </Footer>
+
+            <Menu data-test="menu" />
         </Container>
     )
 }
-
-const NavBar = styled.div`
-    background-color:#126BA5;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 70px;
-`
-
-const NavTitle = styled.h1`
-    font-family: 'Playball', cursive;
-    font-weight: 400;
-    color: #FFFFFF;
-    padding: 0 20px;
-    box-sizing: border-box;
-    
-`
-
-const Profile = styled.img`
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    padding: 0 20px;
-`
 
 const Container = styled.section`
     display: flex;
@@ -254,11 +236,6 @@ const CreateHabit = styled.div`
     width: 100vw;
 `
 
-const List = styled.div`
-    width: 100vw;
-    height:auto;
-`
-
 const NoHabits = styled.h2`
     font-family: 'Lexend Deca';
     font-weight: 400;
@@ -276,6 +253,7 @@ const HabitContainer = styled.div`
     background-color: #FFFFFF;
     border-radius: 5px;
 `
+
 const HabitContainerItem = styled(HabitContainer)`
     height: auto;
     padding-bottom: 5px;
@@ -383,10 +361,15 @@ const ContainerButtons = styled.div`
     margin: 15px 0 15px auto;
 `
 
-const SaveHabit = styled(Button)`
+const Confirme = styled(Button)`
     width: 84px;
     height: 35px;
     font-size: 16px;
+
+    :disabled{
+        background: #52B6FF;
+        opacity: 0.7;
+    }
 `
 
 const Cancel = styled.button`
@@ -400,44 +383,3 @@ const Cancel = styled.button`
     background-color: transparent;
 `
 
-const Footer = styled.div`
-    display: flex;
-    width: 100vw;
-    height: 70px;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #FFFFFF;
-
-    position: fixed;
-    bottom: 0;
-    left: 0;
-`
-
-const FButton = styled.button`
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    color: #52B6FF;
-
-    border: none;
-    background-color: transparent;
-`
-
-const TButton = styled.button`
-    background-color: #52B6FF;
-    width: 90px;
-    height: 90px;
-    color: #FFFFFF;
-    position: relative;
-    bottom: 35%;
-
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    text-align: center;
-
-    border: none;
-    border-radius: 100%;
-`

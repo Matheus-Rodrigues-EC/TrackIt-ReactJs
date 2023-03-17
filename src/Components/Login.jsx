@@ -26,8 +26,6 @@ function Login(props){
         setLoadLogin(1);
     }
 
-    console.log(loadLogin);
-
     function LogIn(){
         // e.preventDefault();
         
@@ -36,14 +34,19 @@ function Login(props){
 
         const promisse = axios.post(Base_URL, body);
         promisse.then(response => {
-            // ActiveLoadLogin();
             console.log(response.data)
             const user = {name: response.data.name, image: response.data.image, token: response.data.token}
             setUserData (user);
             Navigator("/hoje");
         });
-
-        promisse.catch(error => {alert(error.response.data.message); setLoadLogin(0)});
+        promisse.catch(error => {
+            if(email === undefined || password === undefined){
+                alert('email e/ou devem ser preenchidos');
+            }else{
+                alert(error.response.data.message); 
+            }
+            setLoadLogin(0)
+        });
     }
 
     return(
@@ -83,7 +86,7 @@ function Login(props){
                             />
                         </Button>
                     ) : (
-                        <Button type="submit" data-test="login-btn" onClick={() => {ActiveLoadLogin(); LogIn();}}>Entrar</Button>
+                        <Button type="submit" data-test="login-btn" onClick={() => {LogIn(); ActiveLoadLogin();}}>Entrar</Button>
                 )}
             </Form>
             <CadastroLink 
@@ -171,8 +174,10 @@ const Button = styled.button`
     }
 `
 
-const CadastroLink = styled.a`
+const CadastroLink = styled.button`
     color: #52B6FF;
+    background-color: transparent;
+    border: none;
     font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;

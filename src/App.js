@@ -3,7 +3,7 @@ import {Login} from "./Components/Login";
 import Cadastro from "./Components/Cadastro";
 import Today from "./Components/Today";
 import Habits from "./Components/Habits";
-import Teste from "./Components/Historic";
+import Historic from "./Components/Historic";
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
       <Route path={`/cadastro`} element={<Cadastro />}/>
       <Route path={`/hoje`} element={<Today  />}/>
       <Route path={`/habitos`} element={<Habits />}/>
-      <Route path={`/historico`} element={<Teste />}/>
+      <Route path={`/historico`} element={<Historic />}/>
     </Routes>
     
     </BrowserRouter>
