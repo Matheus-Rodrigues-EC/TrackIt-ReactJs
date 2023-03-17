@@ -13,22 +13,24 @@ export default function Cadastro(){
     const [password, setPassword] = useState();
     const [name, setName] = useState();
     const [image, setImage] = useState();
-    let teste = undefined;
+    const [loadSingUp, setLoadSingUp] = useState(0);
 
     function goToLogin(){
         Navigator("/");
     }
 
-    function SigUp(e){
-        e.preventDefault();
+    function ActiveLoadSingUp(){
+        setLoadSingUp(1);
+    }
+
+    function SigUp(){
         
-        teste = "loading"
         const Base_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
         const body ={email, name, image, password};
         // console.log(body);
         const promisse = axios.post(Base_URL, body);
         promisse.then(response => {console.log(response.data); Navigator("/");});
-        promisse.catch(erro => {alert(erro.response.data.message); teste = undefined});
+        promisse.catch(erro => {alert(erro.response.data.message); setLoadSingUp(0)});
 
     }
 
@@ -42,7 +44,7 @@ export default function Cadastro(){
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    disabled={(teste === "loading") ? true : false}
+                    disabled={(loadSingUp > 0) ? true : false}
                     data-test="email-input"
                 />
                 <Input 
@@ -51,7 +53,7 @@ export default function Cadastro(){
                     required
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    disabled={(teste === "loading") ? true : false}
+                    disabled={(loadSingUp > 0) ? true : false}
                     data-test="password-input"
                 />
                 <Input 
@@ -60,7 +62,7 @@ export default function Cadastro(){
                     required
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    disabled={(teste === "loading") ? true : false}
+                    disabled={(loadSingUp > 0) ? true : false}
                     data-test="user-name-input"
                 />
                 <Input 
@@ -69,33 +71,33 @@ export default function Cadastro(){
                     required
                     value={image}
                     onChange={e => setImage(e.target.value)}
-                    disabled={(teste === "loading") ? true : false}
+                    disabled={(loadSingUp > 0) ? true : false}
                     data-test="user-image-input"
                 />
-                {(teste === "loading") ? (
+                {(loadSingUp !== 0) ? (
                         <Button disabled="true" type="button" data-test="signup-btn">
                             <ThreeDots disabled="true"
                                 height="80" 
                                 width="80" 
                                 radius="9"
                                 color="#FFFFFF" 
-                                ariaLabel="three-dots-loading"
+                                ariaLabel="three-dots-loadSingUping"
                                 wrapperStyle={{}}
                                 wrapperClassName=""
                                 visible={true}
                             />
                         </Button>
                     ) : (
-                        <Button type="submit" data-test="signup-btn" >Entrar</Button>
+                        <Button type="submit" data-test="signup-btn" onClick={() => {ActiveLoadSingUp(); SigUp();}} >Entrar</Button>
                 )}
             </Form>
-            <CadastroLink 
+            <LoginLink 
                 onClick={() => {goToLogin()}} 
                 type="button" 
                 data-test="login-link"
             >
                 Já tem uma conta? Faça login!
-            </CadastroLink>
+            </LoginLink>
         </MainContainer>
     )
 }
@@ -134,6 +136,11 @@ const Input = styled.input`
     ::placeholder {
         color: #DBDBDB;
     }
+
+    :disabled{
+        background: #F2F2F2;
+        color: #AFAFAF;
+    }
 `
 
 const Button = styled.button`
@@ -153,9 +160,14 @@ const Button = styled.button`
     text-align: center;
     color: #FFFFFF;
     cursor: pointer;
+
+    :disabled{
+        background: #52B6FF;
+        opacity: 0.7;
+    }
 `
 
-const CadastroLink = styled.a`
+const LoginLink = styled.a`
     color: #52B6FF;
     font-family: 'Lexend Deca';
     font-style: normal;

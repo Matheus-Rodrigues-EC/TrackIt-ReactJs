@@ -15,31 +15,35 @@ function Login(props){
     const Navigator = useNavigate();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    let teste = undefined;
+    const [loadLogin, setLoadLogin] = useState(0);
     const {setUserData} = React.useContext(UserDataContext);
 
     function goToCadastro(){
         Navigator("/cadastro");
     }
 
-    function LogIn(e){
-        e.preventDefault();
-        teste = "undefined";
+    function ActiveLoadLogin(){
+        setLoadLogin(1);
+    }
+
+    console.log(loadLogin);
+
+    function LogIn(){
+        // e.preventDefault();
         
         const Base_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
         const body ={email, password};
 
         const promisse = axios.post(Base_URL, body);
         promisse.then(response => {
-            // console.log(response.data);
+            // ActiveLoadLogin();
+            console.log(response.data)
             const user = {name: response.data.name, image: response.data.image, token: response.data.token}
-
             setUserData (user);
-            
             Navigator("/hoje");
         });
 
-        promisse.catch(error => {alert(error.response.data.message); teste = undefined});
+        promisse.catch(error => {alert(error.response.data.message); setLoadLogin(0)});
     }
 
     return(
@@ -52,7 +56,7 @@ function Login(props){
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    disabled={(teste !== undefined) ? true : false}
+                    disabled={(loadLogin > 0) ? true : false}
                     data-test="email-input"
                 />
                 <Input 
@@ -61,17 +65,17 @@ function Login(props){
                     required
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    disabled={(teste !== undefined) ? true : false}
+                    disabled={(loadLogin > 0) ? true : false}
                     data-test="password-input"
                 />
-                {(teste !== undefined) ? (
-                        <Button disabled="true" type="button" data-test="login-btn" >
-                            <ThreeDots disabled="true"
+                {(loadLogin !== 0) ? (
+                        <Button disabled={true} type="submit" data-test="login-btn" >
+                            <ThreeDots 
                                 height="80" 
                                 width="80" 
                                 radius="9"
                                 color="#FFFFFF" 
-                                ariaLabel="three-dots-loading"
+                                ariaLabel="three-dots-loadLogining"
                                 wrapperStyle={{}}
                                 wrapperClassName=""
                                 visible={true}
@@ -79,7 +83,7 @@ function Login(props){
                             />
                         </Button>
                     ) : (
-                        <Button type="submit" data-test="login-btn" >Entrar</Button>
+                        <Button type="submit" data-test="login-btn" onClick={() => {ActiveLoadLogin(); LogIn();}}>Entrar</Button>
                 )}
             </Form>
             <CadastroLink 
@@ -133,6 +137,11 @@ const Input = styled.input`
     ::placeholder {
         color: #DBDBDB;
     }
+
+    :disabled{
+        background: #F2F2F2;
+        color: #AFAFAF;
+    }
 `
 
 const Button = styled.button`
@@ -155,6 +164,11 @@ const Button = styled.button`
     text-align: center;
     color: #FFFFFF;
     cursor: pointer;
+
+    :disabled{
+        background: #52B6FF;
+        opacity: 0.7;
+    }
 `
 
 const CadastroLink = styled.a`

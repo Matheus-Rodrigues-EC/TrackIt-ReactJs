@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../Providers/UserData";
 import { HabitsListContext } from "../Providers/HabitsList";
+import { ThreeDots } from "react-loader-spinner";
 import Trash from "./../Assets/Images/Trash.png"
 // import { CircularProgressbar } from "react-circular-progressbar";
 
@@ -15,6 +16,7 @@ export default function Habits(props){
     const [habitName, setHabitName] = useState();
     const [select, setSelect] = useState([]);
     const [visible, setVisible] = useState("none");
+    const [loadCreateHabit, setLoadCreateHabit] = useState(0);
 
     const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -49,7 +51,7 @@ export default function Habits(props){
             
         })
 
-    }, [habitsList]);
+    }, [Navigator, UserData, setHabitsList, habitsList]);
 
     console.log(habitsList);
 
@@ -69,6 +71,7 @@ export default function Habits(props){
             setHabitName("");
             setSelect([]);
             setVisible("none");
+            setLoadCreateHabit(0);
         });
         promisse.catch(error => {
             alert(error.response.data.message);
@@ -104,22 +107,65 @@ export default function Habits(props){
                         placeholder="Nome do hábito" 
                         value={habitName}
                         onChange={(e) => setHabitName(e.target.value)}
+                        disabled={(loadCreateHabit > 0) ? true : false}
                         data-test="habit-name-input"
                     />
                     <ListWeekdays>
 
                         {weekdays.map((day, index) => (
                             (select.includes(index) ? (
-                                <ButtonWeekdayOn key={index} onClick={() => {toggleWeekday(index)}} data-test="habit-day" >{day}</ButtonWeekdayOn>
+                                <ButtonWeekdayOn 
+                                    key={index} 
+                                    onClick={() => {toggleWeekday(index)}} 
+                                    disabled={(loadCreateHabit > 0) ? true : false}
+                                    data-test="habit-day" 
+                                    >
+                                        {day}
+                                    </ButtonWeekdayOn>
                             ) : (
-                                <ButtonWeekdayOff key={index} onClick={() => {toggleWeekday(index)}} data-test="habit-day" >{day}</ButtonWeekdayOff>
+                                <ButtonWeekdayOff 
+                                    key={index} 
+                                    onClick={() => {toggleWeekday(index)}} 
+                                    disabled={(loadCreateHabit > 0) ? true : false}
+                                    data-test="habit-day" 
+                                    >
+                                        {day}
+                                    </ButtonWeekdayOff>
                             )
                             )
                         ))}
                     </ListWeekdays>
                     <ContainerButtons>
-                        <Cancel onClick={() => {setVisible("none")}} data-test="habit-create-cancel-btn" >Cancelar</Cancel>
-                        <SaveHabit onClick={() => {AddHabit()}} data-test="habit-create-save-btn" >Salvar</SaveHabit>
+                        <Cancel 
+                            onClick={() => {setVisible("none"); setHabitName(""); setSelect([]);}} 
+                            data-test="habit-create-cancel-btn" 
+                            disabled={(loadCreateHabit > 0) ? true : false}
+                            >
+                                Cancelar
+                        </Cancel>
+
+                        {(loadCreateHabit !== 0) ? (
+                        <SaveHabit disabled="true" type="button" data-test="habit-create-save-btn" >
+                            <ThreeDots disabled="true"
+                                height="80" 
+                                width="80" 
+                                radius="9"
+                                color="#FFFFFF" 
+                                ariaLabel="three-dots-loadSingUping"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={true}
+                            />
+                        </SaveHabit>
+                    ) : (
+                        <SaveHabit 
+                            onClick={() => {AddHabit(); setLoadCreateHabit();}} 
+                            data-test="habit-create-save-btn" 
+                            disabled={(loadCreateHabit > 0) ? true : false}
+                            >
+                                Salvar
+                        </SaveHabit>
+                )}
                     </ContainerButtons>
                 </HabitContainer>
                 {((habitsList.length !== 0)) ? (
@@ -250,6 +296,11 @@ const Input = styled.input`
 
     ::placeholder {
         color: #DBDBDB;
+    }
+
+    :disabled{
+        background: #F2F2F2;
+        color: #B3B3B3;
     }
 `
 
