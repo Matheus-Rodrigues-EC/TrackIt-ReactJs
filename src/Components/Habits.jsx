@@ -260,12 +260,12 @@ const HabitContainerItem = styled(HabitContainer)`
 `
 
 const Input = styled.input`
-    width: 305px;
+    width: auto;
     height: 45px;
     background: #FFFFFF;
     border: 1px solid #D5D5D5;
     border-radius: 5px;
-    margin: 15px auto;
+    margin: 15px 15px 15px 15px; 
     padding:  0 11px 0 11px;
     box-sizing: border-box;
 
@@ -297,8 +297,8 @@ const NameHabit = styled.h2`
 `
 
 const Icon = styled.img`
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     margin: 20px 15px;
 `
 
