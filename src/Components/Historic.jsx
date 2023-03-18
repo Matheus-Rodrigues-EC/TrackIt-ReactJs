@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { UserDataContext } from "../Providers/UserData";
 import { useNavigate } from "react-router-dom";
 import { PercentHabitsContext } from './../Providers/PercentHabits';
-
+import Calendar from "react-calendar";
+import 'react-calendar/dist/Calendar.css';
 import { CircularProgressbar,buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
@@ -13,6 +14,10 @@ export default function Historic(){
     const {percent} = React.useContext(PercentHabitsContext);
     const Navigator = useNavigate();
 
+    useEffect(() =>{
+
+    }, [])
+
     return(
         <Container>
             <Head data-test="header">
@@ -20,6 +25,14 @@ export default function Historic(){
                 <Profile src={UserData.image} />
             </Head>
             
+            <Data>
+                <Calendar
+                    calendarType="US"
+                    onClickDay={(value, event) => alert('Clicked day: ', value)}
+
+                />
+            </Data>
+
             <MainMenu data-test="menu">
                 <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
                     Hábitos
@@ -82,9 +95,14 @@ const Profile = styled.img`
     border-radius: 50%;
     width: 50px;
     height: 50px;
+    object-fit: cover;
     padding: 0 20px;
 `
 
+const Data = styled.div`
+    display: flex;
+    margin:  30px auto;
+`
 ////////////////////////////////
 
 
