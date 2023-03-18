@@ -82,8 +82,7 @@ function Login(props){
                 )}
             </Form>
             <CadastroLink 
-                onClick={(e) => {Navigator("/cadastro");}
-                } 
+                onClick={() => {Navigator("/cadastro")}} 
                 type="button"
                 data-test="signup-link"
             >

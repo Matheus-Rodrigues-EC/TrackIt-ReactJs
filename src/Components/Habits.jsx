@@ -280,6 +280,7 @@ const Profile = styled.img`
     border-radius: 50%;
     width: 50px;
     height: 50px;
+    object-fit: cover;
     padding: 0 20px;
 `
 
@@ -369,17 +370,17 @@ const ButtonWeekdayOff = styled.button`
     font-family: 'Lexend Deca', sans-serif;
     font-weight: 400;
     font-size: 20px;
-    color: #D5D5D5;
+    color: #CFCFCF;
 
     background: #FFFFFF;
-    border: 1px solid #D5D5D5;
+    border: 1px solid #CFCFCF;
     border-radius: 5px;
 `
 
 const ButtonWeekdayOn = styled(ButtonWeekdayOff)`
-    background: #D5D5D5;
+    background: #CFCFCF;
     color: #FFFFFF;
-    border: 1px solid #D5D5D5;
+    border: 1px solid #CFCFCF;
 `
 
 const Title = styled.h1`

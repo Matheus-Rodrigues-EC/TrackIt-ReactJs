@@ -154,9 +154,11 @@ const Container = styled.section`
     display: flex;
     background-color: #E7E7E7;
     flex-direction: column;
-    padding: 70px 0 70px 0;
+    padding: 70px 0 100px 0;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    max-height: auto;
+    overflow-y: scroll;
     
 `
 
