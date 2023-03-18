@@ -15,14 +15,6 @@ export default function Cadastro(){
     const [image, setImage] = useState();
     const [loadSingUp, setLoadSingUp] = useState(0);
 
-    function goToLogin(){
-        Navigator("/");
-    }
-
-    function ActiveLoadSingUp(){
-        setLoadSingUp(1);
-    }
-
     function SigUp(){
         
         const Base_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
@@ -88,11 +80,11 @@ export default function Cadastro(){
                             />
                         </Button>
                     ) : (
-                        <Button type="submit" data-test="signup-btn" onClick={() => {ActiveLoadSingUp(); SigUp();}} >Entrar</Button>
+                        <Button type="submit" data-test="signup-btn" onClick={() => {SigUp(); setLoadSingUp(1);}} >Entrar</Button>
                 )}
             </Form>
             <LoginLink 
-                onClick={() => {goToLogin()}} 
+                onClick={() => {Navigator("/");}} 
                 type="button" 
                 data-test="login-link"
             >

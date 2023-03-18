@@ -8,7 +8,7 @@ export default function Header(){
 
     return (
         <Head data-test="header">
-            <Title>TrackIt</Title>
+            <Titleheader>TrackIt</Titleheader>
             <Profile src={UserData.image} />
         </Head>
     )
@@ -27,7 +27,7 @@ const Head = styled.div`
     height: 70px;
 `
 
-const Title = styled.h1`
+const Titleheader = styled.h1`
     font-family: 'Playball', cursive;
     font-weight: 400;
     color: #FFFFFF;

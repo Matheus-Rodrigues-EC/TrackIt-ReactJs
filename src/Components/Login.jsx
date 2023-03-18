@@ -18,14 +18,6 @@ function Login(props){
     const [loadLogin, setLoadLogin] = useState(0);
     const {setUserData} = React.useContext(UserDataContext);
 
-    function goToCadastro(){
-        Navigator("/cadastro");
-    }
-
-    function ActiveLoadLogin(){
-        setLoadLogin(1);
-    }
-
     function LogIn(){
         // e.preventDefault();
         
@@ -86,14 +78,11 @@ function Login(props){
                             />
                         </Button>
                     ) : (
-                        <Button type="submit" data-test="login-btn" onClick={() => {LogIn(); ActiveLoadLogin();}}>Entrar</Button>
+                        <Button type="submit" data-test="login-btn" onClick={() => {LogIn(); setLoadLogin(1);}}>Entrar</Button>
                 )}
             </Form>
             <CadastroLink 
-                onClick={(e) => {
-                    e.preventDefault(); 
-                    goToCadastro();
-                    }
+                onClick={(e) => {Navigator("/cadastro");}
                 } 
                 type="button"
                 data-test="signup-link"

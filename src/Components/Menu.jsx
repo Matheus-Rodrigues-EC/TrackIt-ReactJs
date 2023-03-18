@@ -14,7 +14,7 @@ export default function Menu(){
     const {percent} = React.useContext(PercentHabitsContext);
 
     return(
-        <Main>
+        <MainMenu>
                 <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
                     Hábitos
                 </SideButton>
@@ -35,11 +35,11 @@ export default function Menu(){
                 <SideButton onClick={() => Navigator("/historico")}  data-test="history-link" >
                     Histórico
                 </SideButton>
-            </Main>
+            </MainMenu>
     )
 }
 
-const Main = styled.div`
+const MainMenu = styled.div`
     display: flex;
     width: 100vw;
     height: 70px;

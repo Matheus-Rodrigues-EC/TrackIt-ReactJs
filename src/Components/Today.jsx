@@ -2,13 +2,16 @@ import React, { useEffect } from "react"
 import styled from "styled-components"
 import axios from "axios";
 import dayjs from "dayjs";
-import Header from "./Header";
-import Menu from "./Menu";
+// import Header from "./Header";
+// import Menu from "./Menu";
 import { UserDataContext } from "../Providers/UserData";
 import { TodayHabitsContext } from "../Providers/TodayHabits";
 import { PercentHabitsContext } from './../Providers/PercentHabits';
 import { useNavigate } from 'react-router-dom';
 import Check from './../Assets/Images/Check.png';
+
+import { CircularProgressbar,buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 
 export default function Today(){
@@ -71,14 +74,18 @@ export default function Today(){
 
     return(
         <Container>
-            <Header data-test="header" />
-                    <Title data-test="today" >
-                        {weekdays[dayjs().day()]}, 
-                        {` ${(dayjs().get('date') < 10) ? ('0' + dayjs().get('date')) : (dayjs().get('date'))}/${(dayjs().get('month') +1 < 10 ? ('0' + dayjs().get('month')) : (dayjs().get('month')))}`} 
-                    </Title>
+            {/* <Header data-test="header" /> */}
+            <Head data-test="header">
+                <Titleheader>TrackIt</Titleheader>
+            <Profile src={UserData.image} />
+        </Head>
+            <Title data-test="today" >
+                {weekdays[dayjs().day()]}, 
+                {` ${(dayjs().get('date') < 10) ? ('0' + dayjs().get('date')) : (dayjs().get('date'))}/${((dayjs().get('month')) < 10 ? ('0' + (dayjs().get('month')+1)) : (dayjs().get('month')+1))}`} 
+            </Title>
             <List>
                 {(todayHabits.length === 0) ? (
-                    <NoHabits>Nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabits>
+                    <NoHabits data-test="today-counter" >Nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabits>
                 ) : (
                     <>
                     <PercentContainer data-test="today-counter">
@@ -93,14 +100,14 @@ export default function Today(){
                     <HabitContainer key={habit.id} data-test="today-habit-container" >
                         <TitleContainer>
                             <TitleHabit data-test="today-habit-name" >{habit.name}</TitleHabit>
-                            <InfoHabit habit={habit.done} data-test="today-habit-sequence" >
+                            <SequenceHabit done={habit.done} data-test="today-habit-sequence" >
                                 Sequência atual:
-                                <p> {habit.currentSequence} dias</p>
-                            </InfoHabit>
-                            <InfoHabit habit={habit.done} data-test="today-habit-record" >
+                                {(habit.currentSequence !== 1) ? (<p>{habit.currentSequence} dias</p>) : <p>{habit.currentSequence} dia</p>}
+                            </SequenceHabit>
+                            <RecordHabit sequence={habit.currentSequence} record={habit.highestSequence} data-test="today-habit-record" >
                                 Seu recorde:
-                                <p> {habit.highestSequence} dias</p>
-                            </InfoHabit>
+                                {(habit.highestSequence !== 1) ? (<p>{habit.highestSequence} dias</p>) : <p>{habit.highestSequence} dia</p>}
+                            </RecordHabit>
                         </TitleContainer>
                         <CheckButton onClick={() => {ToggleHabit(habit.id, habit.done);}} habit={habit.done} data-test="today-habit-check-btn" >
                             <CheckImage src={Check} />
@@ -111,7 +118,29 @@ export default function Today(){
                 )}
 
             </List>
-            <Menu data-test="menu" />
+            {/* <Menu data-test="menu" /> */}
+            <MainMenu>
+                <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
+                    Hábitos
+                </SideButton>
+                <MidButton data-test="today-link" onClick={() => Navigator("/hoje")} >
+                    <CircularProgressbar
+                        value={percent}
+                        text={`Hoje`}
+                        background
+                        backgroundPadding={1}
+                        styles={buildStyles({
+                        backgroundColor: "#52B6FF",
+                        textColor: "#fff",
+                        pathColor: "#fff",
+                        trailColor: "transparent"
+                        })}
+                    />
+                </MidButton>
+                <SideButton onClick={() => Navigator("/historico")}  data-test="history-link" >
+                    Histórico
+                </SideButton>
+            </MainMenu>
         </Container>
     )
 }
@@ -129,6 +158,34 @@ const Container = styled.section`
     width: 100vw;
     height: 100vh;
     
+`
+
+const Head = styled.div`
+    background-color:#126BA5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+`
+
+const Titleheader = styled.h1`
+    font-family: 'Playball', cursive;
+    font-weight: 400;
+    color: #FFFFFF;
+    padding: 0 20px;
+    box-sizing: border-box;
+    
+`
+
+const Profile = styled.img`
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    padding: 0 20px;
 `
 
 const List = styled.div`
@@ -187,7 +244,8 @@ const TitleHabit = styled.h1`
     margin: 15px;
     color: rgb(102, 102, 102);
 `
-const InfoHabit = styled.h4`
+
+const SequenceHabit = styled.h4`
     display: flex;
     align-items: center;
     font-family: 'Lexend Deca';
@@ -199,7 +257,23 @@ const InfoHabit = styled.h4`
     p{
         margin: 0 5px;
         display: flex;
-        color:${(props) => (props.habit === true) ? "#8FC549" : "#666666"}
+        color:${(props) => (props.done === true) ? "#8FC549" : "#666666"}
+    }
+`
+
+const RecordHabit = styled.h4`
+    display: flex;
+    align-items: center;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    color: #666666;
+    margin: 0 15px;
+    p{
+        margin: 0 5px;
+        display: flex;
+        color:${(props) => (((props.sequence === props.record)) && ((props.record > 0))) ? "#8FC549" : "#666666"}
     }
 `
 
@@ -223,4 +297,46 @@ const CheckButton = styled.button`
 
 const CheckImage = styled.img`
     width: 50px;
+`
+
+const MainMenu = styled.div`
+    display: flex;
+    width: 100vw;
+    height: 70px;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #FFFFFF;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+`
+
+const SideButton = styled.button`
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    color: #52B6FF;
+
+    border: none;
+    background-color: transparent;
+`
+
+const MidButton = styled.button`
+    background-color: #52B6FF;
+    width: 90px;
+    height: 90px;
+    color: #FFFFFF;
+    position: relative;
+    bottom: 35%;
+
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+
+    border: none;
+    border-radius: 100%;
 `
