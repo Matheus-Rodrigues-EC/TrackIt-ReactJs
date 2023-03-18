@@ -56,8 +56,6 @@ export default function Habits(props){
 
     }, [Navigator, UserData, setHabitsList, habitsList]);
 
-    console.log(habitsList);
-
     function AddHabit(){
         const Base_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
         const config = {
@@ -166,7 +164,7 @@ export default function Habits(props){
                         </Cancel>
 
                         {(loadCreateHabit !== 0) ? (
-                            <Confirme disabled="true" type="button" data-test="habit-create-save-btn" >
+                            <Confirme disabled={true} type="button" data-test="habit-create-save-btn" >
                                 <ThreeDots
                                     height="80" 
                                     width="80" 
@@ -191,7 +189,7 @@ export default function Habits(props){
                 </HabitContainer>
                 {((habitsList.length !== 0)) ? (
                     habitsList.map((habit) => 
-                        <HabitContainerItem data-test="habit-container">
+                        <HabitContainerItem key={habit.id} data-test="habit-container">
                             <TitleContainer>
                             <NameHabit data-test="habit-name" > {habit.name} </NameHabit>
                                 <Icon src={Trash} onClick={() => {deleteHabit(habit.id); }} data-test="habit-delete-btn" />

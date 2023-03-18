@@ -34,8 +34,8 @@ function Login(props){
 
         const promisse = axios.post(Base_URL, body);
         promisse.then(response => {
-            console.log(response.data)
-            const user = {name: response.data.name, image: response.data.image, token: response.data.token}
+            // console.log(response.data)
+            const user = {name: response.data.name, image: response.data.image, token: response.data.token};
             setUserData (user);
             Navigator("/hoje");
         });

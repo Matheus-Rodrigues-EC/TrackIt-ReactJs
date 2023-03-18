@@ -1,5 +1,7 @@
+import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { PercentHabitsContext } from './../Providers/PercentHabits';
 
 import { CircularProgressbar,buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -9,6 +11,7 @@ import "react-circular-progressbar/dist/styles.css";
 export default function Menu(){
 
     const Navigator = useNavigate();
+    const {percent} = React.useContext(PercentHabitsContext);
 
     return(
         <Main>
@@ -17,7 +20,7 @@ export default function Menu(){
                 </SideButton>
                 <MidButton data-test="today-link" onClick={() => Navigator("/hoje")} >
                     <CircularProgressbar
-                        value={33}
+                        value={percent}
                         text={`Hoje`}
                         background
                         backgroundPadding={1}
