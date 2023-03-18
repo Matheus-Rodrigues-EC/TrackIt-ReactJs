@@ -20,7 +20,7 @@ export default function Historic(){
                 <Profile src={UserData.image} />
             </Head>
             
-            <MainMenu>
+            <MainMenu data-test="menu">
                 <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
                     Hábitos
                 </SideButton>

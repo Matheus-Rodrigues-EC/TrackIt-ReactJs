@@ -218,7 +218,7 @@ export default function Habits(props){
 
             {/* <Menu data-test="menu" /> */}
 
-            <MainMenu>
+            <MainMenu data-test="menu">
                 <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
                     Hábitos
                 </SideButton>

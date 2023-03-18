@@ -75,8 +75,8 @@ export default function Today(){
     return(
         <Container>
             {/* <Header data-test="header" /> */}
-            <Head data-test="header">
-                <Titleheader>TrackIt</Titleheader>
+        <Head data-test="header">
+            <Titleheader>TrackIt</Titleheader>
             <Profile src={UserData.image} />
         </Head>
             <Title data-test="today" >
@@ -85,14 +85,14 @@ export default function Today(){
             </Title>
             <List>
                 {(todayHabits.length === 0) ? (
-                    <NoHabits data-test="today-counter" >Nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabits>
+                    <NoHabits data-test="today-counter" >Nenhum hábito concluído ainda</NoHabits>
                 ) : (
                     <>
                     <PercentContainer data-test="today-counter">
                         {(percent === 0) ? (
                             <Habitchecked percent={percent} >Nenhum hábito concluído ainda</Habitchecked>
                         ) : (
-                            <Habitchecked percent={percent} > {percent}% dos hábitos concluídos</Habitchecked>
+                            <Habitchecked percent={percent} > {percent.toFixed(0)}% dos hábitos concluídos</Habitchecked>
                         )
                     }
                     </PercentContainer>
@@ -104,7 +104,7 @@ export default function Today(){
                                 Sequência atual:
                                 {(habit.currentSequence !== 1) ? (<p>{habit.currentSequence} dias</p>) : <p>{habit.currentSequence} dia</p>}
                             </SequenceHabit>
-                            <RecordHabit sequence={habit.currentSequence} record={habit.highestSequence} data-test="today-habit-record" >
+                            <RecordHabit done={habit.done} sequence={habit.currentSequence} record={habit.highestSequence} data-test="today-habit-record" >
                                 Seu recorde:
                                 {(habit.highestSequence !== 1) ? (<p>{habit.highestSequence} dias</p>) : <p>{habit.highestSequence} dia</p>}
                             </RecordHabit>
@@ -119,7 +119,7 @@ export default function Today(){
 
             </List>
             {/* <Menu data-test="menu" /> */}
-            <MainMenu>
+            <MainMenu data-test="menu" >
                 <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
                     Hábitos
                 </SideButton>
@@ -273,7 +273,7 @@ const RecordHabit = styled.h4`
     p{
         margin: 0 5px;
         display: flex;
-        color:${(props) => (((props.sequence === props.record)) && ((props.record > 0))) ? "#8FC549" : "#666666"}
+        color:${(props) => (((props.sequence === props.record)) && ((props.record > 0) && (props.done === true))) ? "#8FC549" : "#666666"}
     }
 `
 
