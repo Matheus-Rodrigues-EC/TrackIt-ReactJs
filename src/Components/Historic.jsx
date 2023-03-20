@@ -62,11 +62,13 @@ export default function Historic(){
 
 const Container = styled.section`
     display: flex;
-    background-color: #E7E7E7;
     flex-direction: column;
-    padding: 70px 0 70px 0;
+    background-color: #E7E7E7;
+    box-sizing: border-box;
     width: 100vw;
     height: 100vh;
+    overflow-y: scroll;
+    padding-bottom: 100px;
     
 `
 
@@ -101,7 +103,7 @@ const Profile = styled.img`
 
 const Data = styled.div`
     display: flex;
-    margin:  30px auto;
+    margin:  90px auto;
 `
 ////////////////////////////////
 
