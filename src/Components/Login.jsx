@@ -81,11 +81,11 @@ function Login(props){
                         <Button type="submit" data-test="login-btn" onClick={() => {LogIn(); setLoadLogin(1);}}>Entrar</Button>
                 )}
             </Form>
-            <CadastroLink type="button" >
                 <Link to={"/cadastro"} data-test="signup-link">
-                    Não tem uma conta? Cadastre-se!
+                    <CadastroLink type="button" >
+                        Não tem uma conta? Cadastre-se!
+                    </CadastroLink>
                 </Link>
-            </CadastroLink>
         </MainContainer>
     )
 }
@@ -161,7 +161,6 @@ const Button = styled.button`
 `
 
 const CadastroLink = styled.div`
-    Link{
         color: #52B6FF;
         background-color: transparent;
         border: none;
@@ -173,5 +172,4 @@ const CadastroLink = styled.div`
         text-decoration-line: underline;
         margin-top: 25px;
         cursor: pointer;        
-    }
 `
