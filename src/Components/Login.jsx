@@ -18,8 +18,18 @@ function Login(props){
     const [loadLogin, setLoadLogin] = useState(0);
     const {setUserData} = React.useContext(UserDataContext);
 
+    function persistLogin(){
+        const dados = localStorage.getItem("userData");
+        // console.log(dados);
+        if(dados !== null){
+            const user = JSON.parse(dados);
+            setUserData (user);
+            Navigator("/hoje");
+        }
+    }
+    persistLogin();
+
     function LogIn(){
-        // e.preventDefault();
         
         const Base_URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
         const body ={email, password};
@@ -28,7 +38,10 @@ function Login(props){
         promisse.then(response => {
             // console.log(response.data)
             const user = {name: response.data.name, image: response.data.image, token: response.data.token};
+            const serializableUser = JSON.stringify(user);
+            localStorage.setItem("userData", serializableUser);
             setUserData (user);
+            persistLogin()
             Navigator("/hoje");
         });
         promisse.catch(error => {

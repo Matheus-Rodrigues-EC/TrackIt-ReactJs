@@ -84,12 +84,12 @@ export default function Today(){
                 {` ${(dayjs().get('date') < 10) ? ('0' + dayjs().get('date')) : (dayjs().get('date'))}/${((dayjs().get('month')) < 10 ? ('0' + (dayjs().get('month')+1)) : (dayjs().get('month')+1))}`} 
             </Title>
             <List>
-                {(todayHabits.length === 0) ? (
+                {((todayHabits.length === 0) || (todayHabits.length === "NaN")) ? (
                     <NoHabits data-test="today-counter" >Nenhum hábito concluído ainda</NoHabits>
                 ) : (
                     <>
                     <PercentContainer data-test="today-counter">
-                        {(percent === 0) ? (
+                        {((percent === 0) || (percent === "NaN")) ? (
                             <Habitchecked percent={percent} >Nenhum hábito concluído ainda</Habitchecked>
                         ) : (
                             <Habitchecked percent={percent} > {percent.toFixed(0)}% dos hábitos concluídos</Habitchecked>
