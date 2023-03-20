@@ -74,7 +74,6 @@ export default function Today(){
 
     return(
         <Container>
-            {/* <Header data-test="header" /> */}
         <Head data-test="header">
             <Titleheader>TrackIt</Titleheader>
             <Profile src={UserData.image} />
@@ -118,7 +117,6 @@ export default function Today(){
                 )}
 
             </List>
-            {/* <Menu data-test="menu" /> */}
             <MainMenu data-test="menu" >
                 <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
                     Hábitos

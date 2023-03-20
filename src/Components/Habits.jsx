@@ -117,7 +117,6 @@ export default function Habits(props){
 
     return(
         <Container>
-            {/* <Header data-test="header" /> */}
             <Head data-test="header">
                 <Titleheader>TrackIt</Titleheader>
                 <Profile src={UserData.image} />
@@ -215,8 +214,6 @@ export default function Habits(props){
                 ) : ( 
                     <NoHabits>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</NoHabits>
                 )}
-
-            {/* <Menu data-test="menu" /> */}
 
             <MainMenu data-test="menu">
                 <SideButton onClick={() => Navigator("/habitos")}  data-test="habit-link" >
