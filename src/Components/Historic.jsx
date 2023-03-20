@@ -51,6 +51,8 @@ export default function Historic(){
                 </NoHistory>
                 </>
             ) : (
+                <>
+                <Title>Histórico</Title>
                 <CalendarContainer>
                     <Calendar
                         calendarType="US"
@@ -58,6 +60,7 @@ export default function Historic(){
                         data-test="calendar"
                     />
                 </CalendarContainer>
+                </>
             ) }
 
             
