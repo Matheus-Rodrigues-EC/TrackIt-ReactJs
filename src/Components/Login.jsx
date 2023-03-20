@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Logo from "./../Assets/Images/Logo.png";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useState, createContext } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { UserDataContext } from "../Providers/UserData";
@@ -81,12 +81,10 @@ function Login(props){
                         <Button type="submit" data-test="login-btn" onClick={() => {LogIn(); setLoadLogin(1);}}>Entrar</Button>
                 )}
             </Form>
-            <CadastroLink 
-                onClick={() => {Navigator("/cadastro")}} 
-                type="button"
-                data-test="signup-link"
-            >
-                Não tem uma conta? Cadastre-se!
+            <CadastroLink type="button" >
+                <Link to={"/cadastro"} data-test="signup-link">
+                    Não tem uma conta? Cadastre-se!
+                </Link>
             </CadastroLink>
         </MainContainer>
     )
@@ -162,16 +160,18 @@ const Button = styled.button`
     }
 `
 
-const CadastroLink = styled.button`
-    color: #52B6FF;
-    background-color: transparent;
-    border: none;
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    text-align: center;
-    text-decoration-line: underline;
-    margin-top: 25px;
-    cursor: pointer;
+const CadastroLink = styled.div`
+    Link{
+        color: #52B6FF;
+        background-color: transparent;
+        border: none;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        text-align: center;
+        text-decoration-line: underline;
+        margin-top: 25px;
+        cursor: pointer;        
+    }
 `
